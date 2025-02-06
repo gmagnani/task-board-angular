@@ -5,3 +5,11 @@ export const categoryBackgroundColors: Record<string, string> = {
   purple: 'bg-purple-600',
   orange: 'bg-orange-600',
 };
+
+export const categoryIdBackgroundColors: Record<string, string> = {
+  '1': 'bg-green-600',
+  '2': 'bg-blue-600',
+  '3': 'bg-red-600',
+  '4': 'bg-purple-600',
+  '5': 'bg-orange-600',
+};

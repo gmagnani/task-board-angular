@@ -13,6 +13,8 @@ export class CategoryService {
 
   public categories = signal<Category[]>([]);
 
+  public selectedCategoryId = signal('1');
+
   public getCategories(): Observable<Category[]> {
     return this.httpClient
       .get<Category[]>(`${this.apiUrl}/categories`)
