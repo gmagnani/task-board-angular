@@ -11,6 +11,12 @@
       "title": "asdasd",
       "categoryId": "1",
       "isCompleted": false
+    },
+    {
+      "id": "aafb",
+      "title": "Treinar",
+      "categoryId": "5",
+      "isCompleted": false
     }
   ],
   "categories": [

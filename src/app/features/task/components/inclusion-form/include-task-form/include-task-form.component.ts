@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, computed, DestroyRef, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,9 @@ import { createTaskForm } from '../../../constants/create-task-form';
 import { Task } from '../../../model/task.model';
 import { TaskService } from '../../../service/task.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
+import { NgClass } from '@angular/common';
+import { SnackBarService } from '../../../../../shared/services/snack-bar.service';
 
 const MODULES = [
   MatFormFieldModule,
@@ -19,20 +22,34 @@ const MODULES = [
   ReactiveFormsModule,
 ];
 
+const COMMONS = [NgClass];
+
 @Component({
   selector: 'app-include-task-form',
   standalone: true,
-  imports: [...MODULES],
+  imports: [...MODULES, ...COMMONS],
   templateUrl: './include-task-form.component.html',
   styleUrl: './include-task-form.component.scss',
 })
 export class IncludeTaskFormComponent {
   private readonly categoryService = inject(CategoryService);
   private readonly taskService = inject(TaskService);
-  public categories = this.categoryService.categories;
+  public readonly categories = this.categoryService.categories;
+  private readonly snackBarService = inject(SnackBarService);
 
-  public destroy$ = inject(DestroyRef);
+  private readonly destroy$ = inject(DestroyRef);
   public newTaskForm = createTaskForm();
+
+  public isIncludeTaskFormDisable = computed(() => {
+    if (this.taskService.isLoadingTask()) {
+      this.newTaskForm.disable();
+
+      return this.taskService.isLoadingTask();
+    }
+
+    this.newTaskForm.enable();
+    return this.taskService.isLoadingTask();
+  });
 
   public selectionChangeHandler(event: MatSelectChange): void {
     const categoryId = event.value;
@@ -42,6 +59,8 @@ export class IncludeTaskFormComponent {
 
   public onEnterToAddATask(): void {
     if (this.newTaskForm.invalid) return;
+
+    this.taskService.isLoadingTask.set(true);
 
     const { title, categoryId } = this.newTaskForm.value;
 
@@ -53,14 +72,22 @@ export class IncludeTaskFormComponent {
 
     this.taskService
       .createTask(newTask)
-      .pipe(takeUntilDestroyed(this.destroy$))
+      .pipe(
+        finalize(() => this.taskService.isLoadingTask.set(false)),
+        takeUntilDestroyed(this.destroy$)
+      )
       .subscribe({
         next: task => this.taskService.insertATaskInTheTaskList(task),
         error: error => {
-          throw new Error(error.message);
+          this.snackBarService.showSnackBar(error.message, 4000, 'end', 'top');
         },
         complete: () => {
-          alert('Tarefa incluida ');
+          this.snackBarService.showSnackBar(
+            'Tarefa incluida!',
+            4000,
+            'end',
+            'top'
+          );
         },
       });
   }
