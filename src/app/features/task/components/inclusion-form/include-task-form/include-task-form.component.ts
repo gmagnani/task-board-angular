@@ -25,11 +25,10 @@ const MODULES = [
 const COMMONS = [NgClass];
 
 @Component({
-  selector: 'app-include-task-form',
-  standalone: true,
-  imports: [...MODULES, ...COMMONS],
-  templateUrl: './include-task-form.component.html',
-  styleUrl: './include-task-form.component.scss',
+    selector: 'app-include-task-form',
+    imports: [...MODULES, ...COMMONS],
+    templateUrl: './include-task-form.component.html',
+    styleUrl: './include-task-form.component.scss'
 })
 export class IncludeTaskFormComponent {
   private readonly categoryService = inject(CategoryService);

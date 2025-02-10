@@ -9,11 +9,10 @@ const COMPONENTS = [IncludeTaskFormComponent];
 
 const COMMONS = [NgClass];
 @Component({
-  selector: 'app-inclusion-form',
-  standalone: true,
-  imports: [...COMPONENTS, ...COMMONS],
-  templateUrl: './inclusion-form.component.html',
-  styleUrl: './inclusion-form.component.scss',
+    selector: 'app-inclusion-form',
+    imports: [...COMPONENTS, ...COMMONS],
+    templateUrl: './inclusion-form.component.html',
+    styleUrl: './inclusion-form.component.scss'
 })
 export class InclusionFormComponent {
   private readonly categoryService = inject(CategoryService);

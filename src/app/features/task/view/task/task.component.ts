@@ -4,10 +4,9 @@ import { InclusionFormComponent } from '../../components/inclusion-form/inclusio
 const COMPONENTS = [InclusionFormComponent];
 
 @Component({
-  selector: 'app-task',
-  standalone: true,
-  imports: [...COMPONENTS],
-  templateUrl: './task.component.html',
-  styleUrl: './task.component.scss',
+    selector: 'app-task',
+    imports: [...COMPONENTS],
+    templateUrl: './task.component.html',
+    styleUrl: './task.component.scss'
 })
 export class TaskComponent {}
