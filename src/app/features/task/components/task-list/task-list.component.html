@@ -1,0 +1,17 @@
+<div class="mt-16">
+    @if(tasks$ | async){
+        @if(numberOfTasks() > 0){
+            @for(task of tasks(); track task.id){
+                <div class="flex flex-row justify-start mb-2 items-center gap-4">
+                    <span>{{task.title}}</span>
+                    
+                    <!--app update task-->
+
+                    <!--app delete task-->
+                </div>
+            }
+        } @else {
+            <app-no-tasks alt="Nenhuma tarefa adcionada" imageUrl="no_data.svg" message="Nenhuma tarefa adicionada :/" />
+        }
+    }
+</div>
